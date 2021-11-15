@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var restaurants: MutableList<YelpRestaurant>
     private lateinit var adapter: RestaurantsAdapter
     private lateinit var yelpService: YelpService
+    var desiredPrice = "No Preference"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         putData()
     }
 
-    private fun putData(){
+    fun putData(){
         restaurants.clear()
         yelpService.searchRestaurants("Bearer $API_KEY", searchTerm, searchLocation).enqueue(object : Callback<YelpSearchResult> {
             override fun onResponse(call: Call<YelpSearchResult>, response: Response<YelpSearchResult>) {
@@ -60,7 +61,14 @@ class MainActivity : AppCompatActivity() {
                     Log.w(TAG, "Did not receive valid response body from Yelp API... exiting")
                     return
                 }
-                restaurants.addAll(body.restaurants)
+                if(desiredPrice == "No Preference") restaurants.addAll(body.restaurants)
+                else {
+                    val restaurantsIterator = body.restaurants.iterator()
+                    for (curRestaurant in restaurantsIterator) {
+                        if (curRestaurant.price == desiredPrice) restaurants.add(curRestaurant)
+                    }
+                }
+                if(restaurants.isEmpty()) Toast.makeText(this@MainActivity, "No results.", Toast.LENGTH_LONG).show()
                 adapter.notifyDataSetChanged()
             }
 
@@ -74,11 +82,22 @@ class MainActivity : AppCompatActivity() {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
 
+        //filterButton
+        val filterButton = menu.findItem(R.id.filterButton)
+
+        filterButton.setOnMenuItemClickListener(object: MenuItem.OnMenuItemClickListener{
+            override fun onMenuItemClick(item: MenuItem?): Boolean {
+                var dialog = FilterDialogFragment()
+                dialog.show(supportFragmentManager, "filterDialog")
+                return true
+            }
+        })
+
+        //searchView
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val searchItem = menu.findItem(R.id.search)
         val searchView = searchItem?.actionView as SearchView
 
-        //searchView
         searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
