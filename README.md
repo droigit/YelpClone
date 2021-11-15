@@ -21,7 +21,7 @@ The following **extensions** are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![](yelpClone.gif)
+![](yelp-clone.gif)
 
 ## Notes
 
