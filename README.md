@@ -4,7 +4,7 @@
 
 **Yelp clone** displays a list of search results from the Yelp API and displays the results in a scrollable list. 
 
-Time spent: 2.5 hours spent in total
+Time spent: 3.5 hours spent in total
 
 ## Functionality 
 
