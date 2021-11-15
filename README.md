@@ -1,6 +1,6 @@
 # Yelp Clone 
 
-## *Your name here*
+## *Droi*
 
 **Yelp clone** displays a list of search results from the Yelp API and displays the results in a scrollable list. 
 
@@ -29,7 +29,7 @@ N/A
 
 ## License
 
-    Copyright [2021] [droigit]
+    Copyright [2021] [droi]
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
